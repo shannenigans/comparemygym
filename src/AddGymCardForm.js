@@ -19,7 +19,7 @@ export default function AddGymCardForm() {
     const [ location, setLocation ] = React.useState('');
 
     return (
-        <Box component="form" action='http://localhost:3001/addGym' method='POST' onSubmit={(form) => onSubmit(form)}>
+        <Box component="form" action='http://localhost:3001/addGym' method='POST' onSubmit={(form) => onSubmit(form, name, location)}>
             <Stack>
                 <h1>Add a gym</h1>
                 <FormControl>
@@ -68,9 +68,13 @@ export default function AddGymCardForm() {
     )
 }
 
-function onSubmit(form) {
-    console.log('hi')
+function onSubmit(form, name, location) {
     form.preventDefault();
     
-    console.log(form)
+    const gymData = {
+        name: name,
+        location: location
+    };
+
+    
 }

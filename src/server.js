@@ -15,9 +15,6 @@ app.get('/api/getGyms', (req, res) => {
 
 app.post('/api/addGym', (req, res) => {
     const gym = req.body;
-    console.log(req)
-    console.log(gym);
-    
     gyms.push(gym)
 })
 

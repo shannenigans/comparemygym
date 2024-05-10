@@ -1,16 +1,22 @@
-import Card from '@mui/material/Card';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-export default function GymCard({ name, location, hours }) {
+export default function GymCard({ name, location }) {
     return (
-        <Card>
+        <Box  sx={{ maxWidth: 275 }}>
+        <Card variant="outlined">
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {name[0]}
+                    <Avatar aria-label="recipe">
+                        {/* {name[0]} */}
                     </Avatar>
                 }
                 action={
@@ -18,12 +24,11 @@ export default function GymCard({ name, location, hours }) {
                         <MoreVertIcon />
                     </IconButton>
                 }
-                title={name}
-                subheader={location}
             />
             <CardContent>
                 <Typography>
-                    {hours}
+                    {name}
+                    {location}
                 </Typography>
             </CardContent>
             <CardActions disableSpacing>
@@ -32,5 +37,6 @@ export default function GymCard({ name, location, hours }) {
                 </IconButton>
             </CardActions>
         </Card>
+        </Box>
     )
 }

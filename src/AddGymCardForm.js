@@ -18,16 +18,44 @@ export default function AddGymCardForm() {
     const [ name, setName ] = React.useState('');
     const [ location, setLocation ] = React.useState('');
 
+    const onSubmit = (event) => {
+            event.preventDefault();
+            
+            const gymData = {
+                name: name,
+                location: location
+            };
+        
+            fetch('http://localhost:3001/api/addGym', {
+                method: 'POST',
+                body: JSON.stringify(gymData),
+                headers: {
+                    'Content-type': 'application/json'
+                    }
+            })
+            .then(res => {
+                console.log(res.json())
+                if (res.ok) {
+                    console.log('gym added successfully')
+                } else {
+                    console.log('not added')
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        
+    }
     return (
-        <Box component="form" action='http://localhost:3001/addGym' method='POST' onSubmit={(form) => onSubmit(form, name, location)}>
-            <Stack>
+        <Box component="form" action='http://localhost:3001/addGym' method='POST' onSubmit={onSubmit}>
+            <Box>
                 <h1>Add a gym</h1>
                 <FormControl>
-                    <TextField id="gym-name" label="Name of Gym" margin="normal" name="name" onChange={(event) => setName(event.target.value)}></TextField>
+                    <TextField id="gym-name" label="Name of Gym" margin="normal" name="name" onChange={(event) => { setName(event.target.value); }}></TextField>
                     <TextField id="gym-location" label="Location" margin="normal" name="location" onChange={(event) => setLocation(event.target.value)}></TextField>
                 </FormControl>
-            </Stack>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            </Box>
+            {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['TimePicker']}>
                     <Grid container columns={1} spacing={2} alignItems={'center'}>
                         <Grid item xs={6}> <h1>Hours of Operation</h1></Grid>
@@ -61,20 +89,10 @@ export default function AddGymCardForm() {
                         </Grid>
                     </Grid>
                 </DemoContainer>
-            </LocalizationProvider>
+            </LocalizationProvider> */}
             <Button type="submit">Add</Button>
         </Box>
 
     )
 }
 
-function onSubmit(form, name, location) {
-    form.preventDefault();
-    
-    const gymData = {
-        name: name,
-        location: location
-    };
-
-    
-}

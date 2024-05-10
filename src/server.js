@@ -1,21 +1,21 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
+const path = require('path');
 const gyms = [];
 
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
+app.use(cors())
 
-app.get('/', (req, res) => {
-    res.send('hello')
-});
-
-app.get('/getGyms', (req, res) => {
+app.get('/api/getGyms', (req, res) => {
     res.json(gyms);
 })
 
-app.post('/addGym', (req, res) => {
+app.post('/api/addGym', (req, res) => {
     const gym = req.body;
+    console.log(req)
     console.log(gym);
     
     gyms.push(gym)

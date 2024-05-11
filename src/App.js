@@ -21,8 +21,10 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import AddGymCardForm from './forms/AddGymCardForm';
 import AllGyms from './AllGyms';
 import GiveFeedbackForm from './forms/GiveFeedbackForm';
+import Home from './Home';
 
 const TABS = {
+  Home: 'Home',
   Gyms: "Gyms",
   GiveFeedback: "Give Feedback",
   AddGym: "Add Gym"
@@ -35,7 +37,7 @@ const actions = [
 ];
 
 function App() {
-  const [nav, setNav] = React.useState('Gyms');
+  const [nav, setNav] = React.useState('Home');
   const handleItemClick = (tab) => {
     setNav(tab);
   }
@@ -49,9 +51,10 @@ function App() {
       flexDirection="column"
       textAlign="center"
     >
-      {nav == TABS.AddGym && <AddGymCardForm></AddGymCardForm>}
-      {nav == TABS.Gyms && <AllGyms></AllGyms>}
-      {nav == TABS.GiveFeedback && <GiveFeedbackForm></GiveFeedbackForm>}
+      {nav === TABS.Home && <Home></Home>}
+      {nav === TABS.AddGym && <AddGymCardForm></AddGymCardForm>}
+      {nav === TABS.Gyms && <AllGyms></AllGyms>}
+      {nav === TABS.GiveFeedback && <GiveFeedbackForm></GiveFeedbackForm>}
       <SpeedDial
         ariaLabel='speed dial'
         sx={{ position: 'absolute', bottom: 16, right: 16 }}

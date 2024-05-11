@@ -21,14 +21,13 @@ export default function AllGyms() {
     }, [])
 
     return (
-        <>
-            <Box><h1>All Gyms</h1></Box>
+        gyms.length === 0 
+            ? <Box><h1>No gyms yet! Add one using the form.</h1></Box> 
+            : <> <Box><h1>All Gyms</h1></Box>
             <Grid container spacing={2}>
                 {gyms.map((gym, index) => {
                     return <GymCard {...gym} />
                 })}
-            </Grid>
-
-        </>
+            </Grid></>
     )
 }

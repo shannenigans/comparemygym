@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
+import Grid from '@mui/material/Grid';
 
 export default function GymCard({ name, location, img }) {
     const [ averageRating, setAverageRating ] = React.useState([]);
@@ -35,7 +36,7 @@ export default function GymCard({ name, location, img }) {
     }, [])
 
     return (
-        <Box sx={{ maxWidth: 275 }}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
             <Card variant="outlined">
                 <CardHeader
                     avatar={
@@ -69,6 +70,6 @@ export default function GymCard({ name, location, img }) {
                     </IconButton>
                 </CardActions>
             </Card>
-        </Box>
+        </Grid>
     )
 }

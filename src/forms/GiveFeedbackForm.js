@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,11 +10,15 @@ import TextField from '@mui/material/TextField';
 import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
 
+import CheckIcon from '@mui/icons-material/Check'
+
 export default function GiveFeedbackForm() {
     const [gyms, setGyms] = React.useState([]);
     const [rating, setRating] = React.useState(0);
     const [selectedGym, setSelectedGym] = React.useState('');
     const [hover, setHover] =  React.useState();
+    const [showAlert, setShowAlert] = React.useState(false);
+
     const labels = {
         0.5: 'Poor',
         1: 'Poor+',
@@ -48,10 +53,19 @@ export default function GiveFeedbackForm() {
         })
         .then((res) => {
             if (res.ok) {
-                console.log('feedback submit')
+                console.log('feedback submit');
+                setShowAlert(true)
             }
         })
     }
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (showAlert) {
+                setShowAlert(false);
+            }
+        }, 2000)
+    }, [ showAlert ]);
 
     React.useEffect(() => {
         fetch('http://localhost:3001/api/getGyms', {
@@ -91,6 +105,7 @@ export default function GiveFeedbackForm() {
                          <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>
                     )}
             </FormControl>
+            {showAlert && <Alert icon={<CheckIcon />} severity='success'>Thanks for your feedback</Alert>}
             <Button type="submit">Submit</Button>
         </Box>
     )

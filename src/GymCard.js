@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -9,8 +11,27 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Rating from '@mui/material/Rating';
 
 export default function GymCard({ name, location, img }) {
+    const [ averageRating, setAverageRating ] = React.useState([]);
+
+    React.useEffect(() => {
+        const queryParam = { name: name };
+        const queryString = new URLSearchParams(queryParam).toString();
+
+        fetch(`http://localhost:3001/api/getAverageRating?${queryString}`, {
+            method: 'GET'
+        })
+        .then((res) => {
+            return res.json()
+        })
+        .then((ratingsData) => {
+            const sum = ratingsData.reduce((a, b) => a + b, 0);
+            setAverageRating(sum / ratingsData.length)
+        })
+    }, [])
+
     return (
         <Box sx={{ maxWidth: 275 }}>
             <Card variant="outlined">
@@ -33,6 +54,11 @@ export default function GymCard({ name, location, img }) {
                     <Typography variant="body1">
                         {location}
                     </Typography>
+                    <Rating 
+                    name="rating"
+                    value={averageRating}
+                    
+                    />
                 </CardContent>
                 <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites">

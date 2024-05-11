@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const path = require('path');
 const gyms = [];
 
 app.use(bodyParser.urlencoded({ extended: false}));
@@ -12,6 +11,14 @@ app.use(cors())
 app.get('/api/getGyms', (req, res) => {
     res.json(gyms);
 })
+
+app.get('/api/getAverageRating', (req, res) => {
+    const { name } = req.query;
+    const index = gyms.findIndex((gym) => gym.name === name);
+
+    const ratings = gyms[index].ratings;
+    return res.json(ratings);
+}) 
 
 app.post('/api/addFeedback', (req, res) => {
     const payload = req.body;

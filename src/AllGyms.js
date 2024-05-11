@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'
 
 import GymCard from "./GymCard";
@@ -20,10 +21,14 @@ export default function AllGyms() {
     }, [])
 
     return (
+        <>
+        <Box><h1>All Gyms</h1></Box>
         <Grid container spacing={2}>
             {gyms.map((gym, index) => {
                 return <GymCard {...gym} />
             })}
         </Grid>
+        
+        </>
     )
 }

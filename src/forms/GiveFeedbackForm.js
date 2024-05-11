@@ -16,7 +16,7 @@ export default function GiveFeedbackForm() {
     const [gyms, setGyms] = React.useState([]);
     const [rating, setRating] = React.useState(0);
     const [selectedGym, setSelectedGym] = React.useState('');
-    const [hover, setHover] =  React.useState();
+    const [hover, setHover] = React.useState();
     const [showAlert, setShowAlert] = React.useState(false);
 
     const labels = {
@@ -30,11 +30,11 @@ export default function GiveFeedbackForm() {
         4: 'Good+',
         4.5: 'Excellent',
         5: 'Excellent+',
-      };
+    };
 
     const onSubmit = (event) => {
         event.preventDefault();
-        
+
         const ratingData = {
             rating: rating
         };
@@ -51,12 +51,12 @@ export default function GiveFeedbackForm() {
                 'Content-type': 'application/json'
             }
         })
-        .then((res) => {
-            if (res.ok) {
-                console.log('feedback submit');
-                setShowAlert(true)
-            }
-        })
+            .then((res) => {
+                if (res.ok) {
+                    console.log('feedback submit');
+                    setShowAlert(true)
+                }
+            })
     }
 
     React.useEffect(() => {
@@ -65,7 +65,7 @@ export default function GiveFeedbackForm() {
                 setShowAlert(false);
             }
         }, 2000)
-    }, [ showAlert ]);
+    }, [showAlert]);
 
     React.useEffect(() => {
         fetch('http://localhost:3001/api/getGyms', {
@@ -82,28 +82,31 @@ export default function GiveFeedbackForm() {
 
 
     return (
-        <Box component="form" onSubmit={onSubmit}>
+        <Box component="form" onSubmit={onSubmit} display="flex" flexDirection="column">
             <h1>Provide some feedback</h1>
             <FormControl>
                 <InputLabel id="select-label">Select a gym</InputLabel>
-                <Select labelId="select-label" value={selectedGym} onChange={(event) => {setSelectedGym(event.target.value)}} label="Select a gym">
+                <Select labelId="select-label" value={selectedGym} onChange={(event) => { setSelectedGym(event.target.value) }} label="Select a gym">
                     {gyms.map((gymData) => {
                         return <MenuItem value={gymData.name}>{gymData.name}</MenuItem>
                     })}
                 </Select>
-                <Rating 
-                    name="rating"
-                    value={rating}
-                    onChange={(event, newValue) => {
-                        setRating(newValue)
-                    }}
-                    onChangeActive={(event, newHover) => {
-                        setHover(newHover)
-                    }}
+                <Box sx={{ pt: "16px" }}>
+                    <Rating
+                        name="rating"
+                        value={rating}
+                        onChange={(event, newValue) => {
+                            setRating(newValue)
+                        }}
+                        onChangeActive={(event, newHover) => {
+                            setHover(newHover)
+                        }}
+
                     />
-                    {rating !== null && (
-                         <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>
-                    )}
+                </Box>
+                {rating !== null && (
+                    <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : rating]}</Box>
+                )}
             </FormControl>
             {showAlert && <Alert icon={<CheckIcon />} severity='success'>Thanks for your feedback</Alert>}
             <Button type="submit">Submit</Button>

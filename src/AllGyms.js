@@ -24,7 +24,7 @@ export default function AllGyms() {
         gyms.length === 0 
             ? <Box><h1>No gyms yet! Add one using the form.</h1></Box> 
             : <> <Box><h1>All Gyms</h1></Box>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} justifyContent="center">
                 {gyms.map((gym, index) => {
                     return <GymCard {...gym} />
                 })}

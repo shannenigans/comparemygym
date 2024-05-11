@@ -27,7 +27,8 @@ export default function AddGymCardForm() {
 
         const gymData = {
             name: name,
-            location: location
+            location: location,
+            ratings: []
         };
 
         fetch('http://localhost:3001/api/addGym', {

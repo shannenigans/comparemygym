@@ -22,13 +22,13 @@ export default function AllGyms() {
 
     return (
         <>
-        <Box><h1>All Gyms</h1></Box>
-        <Grid container spacing={2}>
-            {gyms.map((gym, index) => {
-                return <GymCard {...gym} />
-            })}
-        </Grid>
-        
+            <Box><h1>All Gyms</h1></Box>
+            <Grid container spacing={2}>
+                {gyms.map((gym, index) => {
+                    return <GymCard {...gym} />
+                })}
+            </Grid>
+
         </>
     )
 }

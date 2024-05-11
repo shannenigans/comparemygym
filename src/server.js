@@ -21,8 +21,9 @@ app.get('/api/getAverageRating', (req, res) => {
 }) 
 
 app.post('/api/addFeedback', (req, res) => {
+    const { name } = req.query;
     const payload = req.body;
-    const index = gyms.findIndex((gym) => gym.name === payload.gym);
+    const index = gyms.findIndex((gym) => gym.name === name);
 
     const existingGymData = gyms[index];
     let ratings = gyms[index].ratings;

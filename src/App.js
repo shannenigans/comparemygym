@@ -7,9 +7,9 @@ import AddLocationIcon from '@mui/icons-material/AddLocation'
 import FeedbackIcon from '@mui/icons-material/Feedback';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 
-import AddGymCardForm from './AddGymCardForm';
+import AddGymCardForm from './forms/AddGymCardForm';
 import AllGyms from './AllGyms';
-import GiveFeedbackForm from './GiveFeedbackForm';
+import GiveFeedbackForm from './forms/GiveFeedbackForm';
 
 const TABS = {
   Gyms: "Gyms",

@@ -15,6 +15,7 @@ import Rating from '@mui/material/Rating';
 
 export default function GymCard({ name, location, img }) {
     const [ averageRating, setAverageRating ] = React.useState([]);
+    const [ numRatings, setNumRatings ] = React.useState(0);
 
     React.useEffect(() => {
         const queryParam = { name: name };
@@ -28,7 +29,8 @@ export default function GymCard({ name, location, img }) {
         })
         .then((ratingsData) => {
             const sum = ratingsData.reduce((a, b) => a + b, 0);
-            setAverageRating(sum / ratingsData.length)
+            setAverageRating(sum / ratingsData.length);
+            setNumRatings(ratingsData.length);
         })
     }, [])
 
@@ -57,8 +59,9 @@ export default function GymCard({ name, location, img }) {
                     <Rating 
                     name="rating"
                     value={averageRating}
-                    
+                    readOnly
                     />
+                    <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box>
                 </CardContent>
                 <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites">

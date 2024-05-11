@@ -31,11 +31,15 @@ export default function GiveFeedbackForm() {
         event.preventDefault();
         
         const ratingData = {
-            gym: selectedGym,
             rating: rating
-        }
+        };
 
-        fetch('http://localhost:3001/api/addFeedback', {
+        const queryParam = {
+            name: selectedGym
+        };
+        const queryString = new URLSearchParams(queryParam).toString();
+
+        fetch(`http://localhost:3001/api/addFeedback?${queryString}`, {
             method: 'POST',
             body: JSON.stringify(ratingData),
             headers: {
@@ -67,8 +71,8 @@ export default function GiveFeedbackForm() {
         <Box component="form" onSubmit={onSubmit}>
             <h1>Provide some feedback</h1>
             <FormControl>
-                <InputLabel id="select-label">Gym Name</InputLabel>
-                <Select labelId="select-label" value={selectedGym} onChange={(event) => {setSelectedGym(event.target.value)}} label="Gym Name">
+                <InputLabel id="select-label">Select a gym</InputLabel>
+                <Select labelId="select-label" value={selectedGym} onChange={(event) => {setSelectedGym(event.target.value)}} label="Select a gym">
                     {gyms.map((gymData) => {
                         return <MenuItem value={gymData.name}>{gymData.name}</MenuItem>
                     })}

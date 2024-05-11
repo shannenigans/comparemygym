@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -11,50 +12,63 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
+import CheckIcon from '@mui/icons-material/Check';
+
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { FormControl, FormControlLabel, FormGroup } from '@mui/material';
 
 export default function AddGymCardForm() {
-    const [ name, setName ] = React.useState('');
-    const [ location, setLocation ] = React.useState('');
+    const [name, setName] = React.useState('');
+    const [location, setLocation] = React.useState('');
+    const [showAlert, setShowAlert] = React.useState(false);
 
     const onSubmit = (event) => {
-            event.preventDefault();
-            
-            const gymData = {
-                name: name,
-                location: location
-            };
-        
-            fetch('http://localhost:3001/api/addGym', {
-                method: 'POST',
-                body: JSON.stringify(gymData),
-                headers: {
-                    'Content-type': 'application/json'
-                    }
-            })
-            .then(res => {
-                console.log(res.json())
+        event.preventDefault();
+
+        const gymData = {
+            name: name,
+            location: location
+        };
+
+        fetch('http://localhost:3001/api/addGym', {
+            method: 'POST',
+            body: JSON.stringify(gymData),
+            headers: {
+                'Content-type': 'application/json'
+            }
+        })
+            .then((res) => {
                 if (res.ok) {
-                    console.log('gym added successfully')
-                } else {
-                    console.log('not added')
+                    console.log('ok!');
+                    setName('')
+                    setLocation('')
+                    setShowAlert(true);
                 }
             })
-            .catch(err => {
-                console.log(err)
-            })
-        
+
+
+
     }
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            if (showAlert) {
+                setShowAlert(false);
+            }
+        }, 2000)
+    }, [ showAlert ])
+
     return (
         <Box component="form" action='http://localhost:3001/addGym' method='POST' onSubmit={onSubmit}>
             <Box>
                 <h1>Add a gym</h1>
                 <FormControl>
-                    <TextField id="gym-name" label="Name of Gym" margin="normal" name="name" onChange={(event) => { setName(event.target.value); }}></TextField>
-                    <TextField id="gym-location" label="Location" margin="normal" name="location" onChange={(event) => setLocation(event.target.value)}></TextField>
+                    <TextField id="gym-name" label="Name of Gym" margin="normal" name="name" value={name} onChange={(event) => { setName(event.target.value); }}></TextField>
+                    <TextField id="gym-location" label="Location" margin="normal" name="location" value={location} onChange={(event) => setLocation(event.target.value)}></TextField>
                 </FormControl>
+                {showAlert && <Alert icon={<CheckIcon />} severity='success'>Successfully added gym.</Alert>}
             </Box>
+        
             {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['TimePicker']}>
                     <Grid container columns={1} spacing={2} alignItems={'center'}>

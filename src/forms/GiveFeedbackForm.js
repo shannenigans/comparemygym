@@ -43,20 +43,29 @@ export default function GiveFeedbackForm() {
             name: selectedGym
         };
         const queryString = new URLSearchParams(queryParam).toString();
-
-        fetch(`http://localhost:3001/api/addFeedback?${queryString}`, {
-            method: 'POST',
-            body: JSON.stringify(ratingData),
-            headers: {
-                'Content-type': 'application/json'
-            }
+        
+        fetch(`http://localhost:3001/api/getNearbyGyms`)
+        .then((res) => {
+            console.log('test')
+            console.log(res)
+            return res.json();
         })
-            .then((res) => {
-                if (res.ok) {
-                    console.log('feedback submit');
-                    setShowAlert(true)
-                }
-            })
+        .then(data => { console.log(data)})
+        .catch(err => {console.log(err)})
+
+        // fetch(`http://localhost:3001/api/addFeedback?${queryString}`, {
+        //     method: 'POST',
+        //     body: JSON.stringify(ratingData),
+        //     headers: {
+        //         'Content-type': 'application/json'
+        //     }
+        // })
+        //     .then((res) => {
+        //         if (res.ok) {
+        //             console.log('feedback submit');
+        //             setShowAlert(true)
+        //         }
+        //     })
     }
 
     React.useEffect(() => {

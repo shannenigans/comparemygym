@@ -18,22 +18,22 @@ export default function GymCard({ name, location, img }) {
     const [ averageRating, setAverageRating ] = React.useState([]);
     const [ numRatings, setNumRatings ] = React.useState(0);
 
-    React.useEffect(() => {
-        const queryParam = { name: name };
-        const queryString = new URLSearchParams(queryParam).toString();
+    // React.useEffect(() => {
+    //     const queryParam = { name: name };
+    //     const queryString = new URLSearchParams(queryParam).toString();
 
-        fetch(`http://localhost:3001/api/getAverageRating?${queryString}`, {
-            method: 'GET'
-        })
-        .then((res) => {
-            return res.json()
-        })
-        .then((ratingsData) => {
-            const sum = ratingsData.reduce((a, b) => a + b, 0);
-            setAverageRating(sum / ratingsData.length);
-            setNumRatings(ratingsData.length);
-        })
-    }, [])
+    //     fetch(`http://localhost:3001/api/getAverageRating?${queryString}`, {
+    //         method: 'GET'
+    //     })
+    //     .then((res) => {
+    //         return res.json()
+    //     })
+    //     .then((ratingsData) => {
+    //         const sum = ratingsData.reduce((a, b) => a + b, 0);
+    //         setAverageRating(sum / ratingsData.length);
+    //         setNumRatings(ratingsData.length);
+    //     })
+    // }, [])
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -57,12 +57,12 @@ export default function GymCard({ name, location, img }) {
                     <Typography variant="body1">
                         {location}
                     </Typography>
-                    <Rating 
+                    {/* <Rating 
                     name="rating"
                     value={averageRating}
                     readOnly
                     />
-                    <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box>
+                    <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box> */}
                 </CardContent>
                 <CardActions disableSpacing>
                     <IconButton aria-label="add to favorites">

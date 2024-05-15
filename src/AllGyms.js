@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Grid, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
+import { Box, CircularProgress, Grid, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 
 import GymCard from "./GymCard";
 
@@ -19,7 +19,8 @@ const RADIUS_STRINGS = {
 
 export default function AllGyms() {
     const [gyms, setGyms] = React.useState([]);
-    const [radius, setRadius] = React.useState(RADIUS.MILE)
+    const [radius, setRadius] = React.useState(RADIUS.MILE);
+    const [showSpinner, setShowSpinner] = React.useState(true);
 
     React.useEffect(() => {
         const getPosition = () => {
@@ -35,15 +36,15 @@ export default function AllGyms() {
                 radius: radius
             };
             const queryString = new URLSearchParams(queryParam).toString();
-            
+
             fetch(`http://localhost:3001/api/getNearbyGyms?${queryString}`)
                 .then((res) => {
                     return res.json();
                 })
-                .then(data => { setGyms(data.places) })
+                .then(data => { setGyms(data.places); setShowSpinner(false) })
                 .catch(err => { console.log(err) })
         })
-    }, [ radius ])
+    }, [radius])
 
 
     return (
@@ -54,17 +55,18 @@ export default function AllGyms() {
                     aria-labelledby="gym_radius_label"
                     defaultValue={RADIUS.MILE}
                     name="radius-radio-buttons"
-                    onChange={(event) => { event.preventDefault(); setRadius(event.target.value)}}
+                    onChange={(event) => { event.preventDefault(); setRadius(event.target.value); setShowSpinner(true) }}
                 >
-                    <FormControlLabel value={RADIUS.MILE}  control={<Radio />} label={RADIUS_STRINGS.MILE} />
-                    <FormControlLabel value={RADIUS.TWO_MILE} control={<Radio />} label={RADIUS_STRINGS.TWO_MILE}  />
-                    <FormControlLabel value={RADIUS.THREE_MILE}  control={<Radio />} label={RADIUS_STRINGS.THREE_MILE}  />
+                    <FormControlLabel value={RADIUS.MILE} control={<Radio />} label={RADIUS_STRINGS.MILE} />
+                    <FormControlLabel value={RADIUS.TWO_MILE} control={<Radio />} label={RADIUS_STRINGS.TWO_MILE} />
+                    <FormControlLabel value={RADIUS.THREE_MILE} control={<Radio />} label={RADIUS_STRINGS.THREE_MILE} />
                 </RadioGroup>
             </FormControl>
-            <Grid container spacing={2} justifyContent="center">
-                {gyms?.map((gym, index) => {
-                    return <GymCard name={gym.displayName.text} location={gym.displayName.formattedAddress} />
-                })}
-            </Grid></>
+            {showSpinner ? <CircularProgress /> :
+                <Grid container spacing={2} justifyContent="center">
+                    {gyms?.map((gym, index) => {
+                        return <GymCard name={gym.displayName.text} location={gym.displayName.formattedAddress} />
+                    })}
+                </Grid>}</>
     )
 }

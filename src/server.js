@@ -11,19 +11,19 @@ app.use(cors())
 
 app.get('/api/getNearbyGyms', (req, res) => {
     try {
+        const { latitude, longitude } = req.query;
         const requestData = {
             includedTypes: ['gym'],
             maxResultCount: 10,
             locationRestriction: {
                 circle: {
-                    center: { latitude: 37.7937, longitude: -122.3965 },
+                    center: { latitude, longitude },
                     radius: 500.0
                 }
             }
         };
 
-
-        return fetch(`https://places.googleapis.com/v1/places:searchNearby`, {
+        fetch(`https://places.googleapis.com/v1/places:searchNearby`, {
             method: 'POST',
             body: JSON.stringify(requestData),
             headers:
@@ -35,7 +35,7 @@ app.get('/api/getNearbyGyms', (req, res) => {
 
         })
         .then((response) => { return response.json()})
-        .then((data) => { console.log(data); return res.json(data)})
+        .then((data) => { return res.json(data)})
     } catch (err) {
         console.error("Error", err)
     }

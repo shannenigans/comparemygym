@@ -11,14 +11,14 @@ app.use(cors())
 
 app.get('/api/getNearbyGyms', (req, res) => {
     try {
-        const { latitude, longitude } = req.query;
+        const { latitude, longitude, radius } = req.query;
         const requestData = {
             includedTypes: ['gym'],
             maxResultCount: 10,
             locationRestriction: {
                 circle: {
                     center: { latitude, longitude },
-                    radius: 500.0
+                    radius: radius
                 }
             }
         };

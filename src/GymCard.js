@@ -35,6 +35,29 @@ export default function GymCard({ name, location, img }) {
     //     })
     // }, [])
 
+    const addCardToFavorites = (name, location) => {
+        const gym = {
+            displayName: {
+                text: name
+            },
+            formattedAddress: location
+        };
+
+        fetch('http://localhost:3001/api/addToFavorites',
+            {
+                method: 'POST',
+                body: JSON.stringify(gym),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+        )
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => { console.log(data)})
+    }
+
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
             <Card variant="outlined">
@@ -65,7 +88,7 @@ export default function GymCard({ name, location, img }) {
                     <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box> */}
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
+                    <IconButton aria-label="add to favorites" onClick={() => addCardToFavorites(name, location)}>
                         <FavoriteIcon />
                     </IconButton>
                 </CardActions>

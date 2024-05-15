@@ -65,7 +65,7 @@ export default function AllGyms() {
             {showSpinner ? <CircularProgress /> :
                 <Grid container spacing={2} justifyContent="center">
                     {gyms?.map((gym, index) => {
-                        return <GymCard name={gym.displayName.text} location={gym.displayName.formattedAddress} />
+                        return <GymCard name={gym.displayName.text} location={gym.formattedAddress} />
                     })}
                 </Grid>}</>
     )

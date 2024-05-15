@@ -14,7 +14,7 @@ app.get('/api/getNearbyGyms', (req, res) => {
         const { latitude, longitude, radius } = req.query;
         const requestData = {
             includedTypes: ['gym'],
-            maxResultCount: 10,
+            maxResultCount: 5 * (radius/1600),
             locationRestriction: {
                 circle: {
                     center: { latitude, longitude },
@@ -30,7 +30,7 @@ app.get('/api/getNearbyGyms', (req, res) => {
             {
                 'Content-Type': 'application/json',
                 'X-Goog-Api-Key': process.env.REACT_APP_GOOGLE_PLACES_API,
-                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress'
+                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos'
             }
 
         })

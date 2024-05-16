@@ -27,7 +27,7 @@ export default function Favorites() {
         {showSpinner ? <CircularProgress /> :
             <Grid container spacing={2} justifyContent="center">
                 {favGyms?.map((gym, index) => {
-                    return <GymCard name={gym.displayName.text} location={gym.formattedAddress} wasFavorited={gym.isFavorited}/>
+                    return <GymCard gymData={gym} wasFavorited={gym.isFavorited}/>
                 })}
             </Grid>}</>
     )

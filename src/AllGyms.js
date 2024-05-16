@@ -82,7 +82,7 @@ export default function AllGyms() {
             {showSpinner ? <CircularProgress /> :
                 <Grid container spacing={2} justifyContent="center">
                     {gyms?.map((gym, index) => {
-                        return <GymCard name={gym.displayName.text} location={gym.formattedAddress} wasFavorited={gym?.isFavorited} />
+                        return <GymCard gymData={gym} wasFavorited={gym?.isFavorited} />
                     })}
                 </Grid>}</>
     )
@@ -91,7 +91,7 @@ export default function AllGyms() {
 function renderRadioButtons(setRadius, setShowSpinner) {
     return (
         <FormControl>
-                <FormLabel id="gym_radius_label">Find the top 5 gyms in this radius:</FormLabel>
+                <FormLabel id="gym_radius_label">Find the top gyms in this radius:</FormLabel>
                 <RadioGroup
                     aria-labelledby="gym_radius_label"
                     defaultValue={RADIUS.MILE}

@@ -16,16 +16,13 @@ import Grid from '@mui/material/Grid';
 
 import './styles.scss';
 
-export default function GymCard({ name, location, img, wasFavorited }) {
+export default function GymCard({ gymData, wasFavorited }) {
     const [isFavorited, setIsFavorited] = React.useState(wasFavorited);
     const [isFlipped, setIsFlipped] = React.useState(false);
 
-    const toggleCardInFavorites = (name, location) => {
+    const toggleCardInFavorites = (gymData) => {
         const gym = {
-            displayName: {
-                text: name
-            },
-            formattedAddress: location,
+            ...gymData,
             isFavorited: !isFavorited
         };
 
@@ -49,10 +46,10 @@ export default function GymCard({ name, location, img, wasFavorited }) {
             <Card variant="outlined" className='flip'>
                 <div className='flip-inner'>
                     <div className='front'>
-                        {renderInner(name, location, toggleCardInFavorites, isFavorited, true)}
+                        {renderInner(gymData, toggleCardInFavorites, isFavorited, true)}
                     </div>
                     <div className='back'>
-                        {renderInner(name, location, toggleCardInFavorites, isFavorited, false)}
+                        {renderInner(gymData, toggleCardInFavorites, isFavorited, false)}
                     </div>
                 </div>
             </Card>
@@ -60,15 +57,23 @@ export default function GymCard({ name, location, img, wasFavorited }) {
     )
 }
 
-function renderInner(name, location, toggleCardInFavorites, isFavorited, isFront) {
+function renderInner(gymData, toggleCardInFavorites, isFavorited, isFront) {
+    const name = gymData.displayName.text;
+    const location = gymData.formattedAddress;
+
     return (<>
         {renderHeader(name)}
-        {renderCardContent(name, location, isFront)}
+        {renderCardContent(gymData, isFront)}
         {renderActions(name, location, toggleCardInFavorites, isFavorited)}
     </>)
 }
 
-function renderCardContent(name, location, isFront) {
+function renderCardContent(gymData, isFront) {
+    const name = gymData.displayName.text;
+    const location = gymData.formattedAddress;
+    const currentOpeningHours = gymData.currentOpeningHours;
+    const rating = gymData.rating;
+    
     return (isFront ?
         <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -77,6 +82,11 @@ function renderCardContent(name, location, isFront) {
             <Typography variant="body1">
                 {location}
             </Typography>
+            <Rating 
+                name="gym-rating"
+                value={rating}
+                readOnly
+            />
         </CardContent>
         : <CardContent>
             <Typography gutterBottom variant="h5" component="div">

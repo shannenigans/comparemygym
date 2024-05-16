@@ -1,6 +1,8 @@
 import React from 'react';
 import { Box, Grid, CircularProgress, Typography } from '@mui/material';
 
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import GymCard from './GymCard';
 
 export default function Favorites() {
@@ -23,14 +25,15 @@ export default function Favorites() {
     })
 
     return (
-        <> <Box marginRight="16px"><h1>Favorite Gyms</h1></Box>
+        <>
+            {favGyms.length > 0 && <Box marginRight="16px"><h1>Favorite Gyms</h1></Box>}
             {showSpinner ? <CircularProgress /> :
                 <Grid container spacing={2} justifyContent="center">
                     {favGyms.length > 0
                         ? favGyms.map((gym, index) => {
                             return <GymCard gymData={gym} wasFavorited={gym.isFavorited} />
                         })
-                        : <Typography justifyContent="center">Favorite some gyms to see here.</Typography>}
+                        : <Typography justifyContent="center"><FavoriteIcon fontSize='small' className='favorite-icon'/>Favorite some gyms to see here.</Typography>}
 
                 </Grid>}</>
     )

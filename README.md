@@ -1,8 +1,8 @@
-![image](https://github.com/shannenigans/comparemygym/assets/8731231/612dc48e-12a0-4ced-8895-3737e5ca4dc7)
+# DEMO
+https://github.com/shannenigans/ratemygym/assets/8731231/c1e0d895-f700-4211-8a06-56791ae53960
 
-
-# Welcome to comparemygym
-This project is built with React, Javascript, Express and Material UI.
+# Welcome to ratemygym
+This project is built with React, Javascript, Express, Material UI, and Google Places API.
 
 ## Getting Started
 ### `npm start`

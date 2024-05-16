@@ -13,6 +13,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 
 import './styles.scss';
 
@@ -71,8 +72,11 @@ function renderInner(gymData, toggleCardInFavorites, isFavorited, isFront) {
 function renderCardContent(gymData, isFront) {
     const name = gymData.displayName.text;
     const location = gymData.formattedAddress;
-    const currentOpeningHours = gymData.currentOpeningHours;
+    const currentOpeningHours = gymData.currentOpeningHours?.weekdayDescriptions;
     const rating = gymData.rating;
+    const website = gymData.websiteUri;
+    const userRatingCount = gymData.userRatingCount;
+    const phone = gymData.nationalPhoneNumber;
     
     return (isFront ?
         <CardContent>
@@ -82,19 +86,28 @@ function renderCardContent(gymData, isFront) {
             <Typography variant="body1">
                 {location}
             </Typography>
+            <Typography variant='body1'>
+                {phone}
+            </Typography>
             <Rating 
                 name="gym-rating"
                 value={rating}
                 readOnly
+                className='gym-rating'
             />
+            <Typography variant='body2'>
+                {userRatingCount} reviews
+            </Typography>
         </CardContent>
         : <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-                {'test'}
-            </Typography>
-            <Typography variant="body1">
-                {location}
-            </Typography>
+            {currentOpeningHours && <Typography gutterBottom variant="h5" component="div">
+                {'Hours'}
+            </Typography>}
+            {currentOpeningHours ? currentOpeningHours.map((hour) => {
+                return <Typography variant="body1">{hour}</Typography>
+            }) 
+            : 
+            <>No hours available. See <Link variant="body2">{website}</Link> for more details.</>}
         </CardContent>
 
     )

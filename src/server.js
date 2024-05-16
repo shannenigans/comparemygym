@@ -31,7 +31,7 @@ app.get('/api/getNearbyGyms', (req, res) => {
             {
                 'Content-Type': 'application/json',
                 'X-Goog-Api-Key': process.env.REACT_APP_GOOGLE_PLACES_API,
-                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.priceLevel,places.rating,places.currentOpeningHours'
+                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.rating,places.currentOpeningHours,places.userRatingCount,places.websiteUri'
             }
 
         })

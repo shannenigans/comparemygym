@@ -14,27 +14,11 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
+import './styles.scss';
+
 export default function GymCard({ name, location, img, wasFavorited }) {
-    const [ averageRating, setAverageRating ] = React.useState([]);
-    const [ numRatings, setNumRatings ] = React.useState(0);
-    const [ isFavorited, setIsFavorited ] = React.useState(wasFavorited);
-
-    // React.useEffect(() => {
-    //     const queryParam = { name: name };
-    //     const queryString = new URLSearchParams(queryParam).toString();
-
-    //     fetch(`http://localhost:3001/api/getAverageRating?${queryString}`, {
-    //         method: 'GET'
-    //     })
-    //     .then((res) => {
-    //         return res.json()
-    //     })
-    //     .then((ratingsData) => {
-    //         const sum = ratingsData.reduce((a, b) => a + b, 0);
-    //         setAverageRating(sum / ratingsData.length);
-    //         setNumRatings(ratingsData.length);
-    //     })
-    // }, [])
+    const [isFavorited, setIsFavorited] = React.useState(wasFavorited);
+    const [isFlipped, setIsFlipped] = React.useState(false);
 
     const toggleCardInFavorites = (name, location) => {
         const gym = {
@@ -54,47 +38,75 @@ export default function GymCard({ name, location, img, wasFavorited }) {
                 }
             }
         )
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => { setIsFavorited(!isFavorited); })
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => { setIsFavorited(!isFavorited); })
     }
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card variant="outlined">
-                <CardHeader
-                    avatar={
-                        <Avatar aria-label="avatar name">
-                            {name[0]}
-                        </Avatar>
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {name}
-                    </Typography>
-                    <Typography variant="body1">
-                        {location}
-                    </Typography>
-                    {/* <Rating 
-                    name="rating"
-                    value={averageRating}
-                    readOnly
-                    />
-                    <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box> */}
-                </CardContent>
-                <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
-                        <FavoriteIcon sx={ isFavorited ? { color: 'red' } : {}}/>
-                    </IconButton>
-                </CardActions>
+            <Card variant="outlined" className='flip'>
+                <div className='flip-inner'>
+                    <div className='front'>
+                        {renderInner(name, location, toggleCardInFavorites, isFavorited, true)}
+                    </div>
+                    <div className='back'>
+                        {renderInner(name, location, toggleCardInFavorites, isFavorited, false)}
+                    </div>
+                </div>
             </Card>
         </Grid>
+    )
+}
+
+function renderInner(name, location, toggleCardInFavorites, isFavorited, isFront) {
+    return (<>
+        {renderHeader(name)}
+        {renderCardContent(name, location, isFront)}
+        {renderActions(name, location, toggleCardInFavorites, isFavorited)}
+    </>)
+}
+
+function renderCardContent(name, location, isFront) {
+    return (isFront ?
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+                {name}
+            </Typography>
+            <Typography variant="body1">
+                {location}
+            </Typography>
+        </CardContent>
+        : <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+                {'test'}
+            </Typography>
+            <Typography variant="body1">
+                {location}
+            </Typography>
+        </CardContent>
+
+    )
+}
+
+function renderActions(name, location, toggleCardInFavorites, isFavorited) {
+    return (
+        <CardActions disableSpacing>
+            <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
+                <FavoriteIcon sx={isFavorited ? { color: 'red' } : {}} />
+            </IconButton>
+        </CardActions>
+    )
+}
+function renderHeader(name) {
+    return (
+        <CardHeader
+            avatar={
+                <Avatar aria-label="avatar name">
+                    {name[0]}
+                </Avatar>
+            }
+        />
     )
 }

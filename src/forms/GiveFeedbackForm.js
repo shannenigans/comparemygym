@@ -36,15 +36,16 @@ export default function GiveFeedbackForm() {
         event.preventDefault();
 
         const ratingData = {
-            rating: rating
-        };
-
-        const queryParam = {
+            rating: rating,
             name: selectedGym
         };
-        const queryString = new URLSearchParams(queryParam).toString();
 
-        fetch(`http://localhost:3001/api/addFeedback?${queryString}`, {
+        // const queryParam = {
+            
+        // };
+        // const queryString = new URLSearchParams(queryParam).toString();
+
+        fetch(`http://localhost:3001/api/addFeedback`, {
             method: 'POST',
             body: JSON.stringify(ratingData),
             headers: {
@@ -88,7 +89,7 @@ export default function GiveFeedbackForm() {
                 <InputLabel id="select-label">Select a gym</InputLabel>
                 <Select labelId="select-label" value={selectedGym} onChange={(event) => { setSelectedGym(event.target.value) }} label="Select a gym">
                     {gyms.map((gymData) => {
-                        return <MenuItem value={gymData.name}>{gymData.name}</MenuItem>
+                        return <MenuItem value={gymData.displayName.text}>{gymData.displayName.text}</MenuItem>
                     })}
                 </Select>
                 <Box sx={{ pt: "16px" }}>

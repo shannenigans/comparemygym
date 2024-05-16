@@ -20,7 +20,7 @@ export default function Favorites() {
             setFavGyms(data);
             setShowSpinner(false)
         })
-    })
+    }, [])
 
     return (
         <> <Box><h1>Favorite Gyms</h1></Box>

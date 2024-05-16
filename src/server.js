@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const gyms = [];
+let gyms = [];
 let faves = [];
 const fetch = require("node-fetch")
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,7 +36,9 @@ app.get('/api/getNearbyGyms', (req, res) => {
 
         })
         .then((response) => { return response.json()})
-        .then((data) => { return res.json(data)})
+        .then((data) => { 
+            gyms = data.places;
+            return res.json(data)})
     } catch (err) {
         console.error("Error", err)
     }

@@ -79,7 +79,7 @@ export default function AllGyms() {
     return (
         <> <Box><h1>All Gyms</h1></Box>
             <FormControl>
-                <FormLabel id="gym_radius_label">What radius of gyms in your area do you want to see?</FormLabel>
+                <FormLabel id="gym_radius_label">Find the top 5 gyms in this radius:</FormLabel>
                 <RadioGroup
                     aria-labelledby="gym_radius_label"
                     defaultValue={RADIUS.MILE}

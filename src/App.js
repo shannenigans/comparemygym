@@ -1,7 +1,5 @@
 import React from 'react';
 
-import './App.css';
-
 import Box from '@mui/material/Box';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import SpeedDial from '@mui/material/SpeedDial';

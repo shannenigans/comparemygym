@@ -61,7 +61,7 @@ function renderInner(gymData, toggleCardInFavorites, isFavorited, isFront) {
     return (<>
         {renderHeader(name)}
         {renderCardContent(gymData, isFront)}
-        {renderActions(name, location, toggleCardInFavorites, isFavorited)}
+        {renderActions(gymData, toggleCardInFavorites, isFavorited)}
     </>)
 }
 
@@ -109,10 +109,10 @@ function renderCardContent(gymData, isFront) {
     )
 }
 
-function renderActions(name, location, toggleCardInFavorites, isFavorited) {
+function renderActions(gymData, toggleCardInFavorites, isFavorited) {
     return (
         <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
+            <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(gymData)}>
                 <FavoriteIcon sx={isFavorited ? { color: 'red' } : {}} />
             </IconButton>
         </CardActions>

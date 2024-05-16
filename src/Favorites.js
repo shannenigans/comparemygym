@@ -20,15 +20,18 @@ export default function Favorites() {
                 setFavGyms(data);
                 setShowSpinner(false)
             })
-    }, [])
+    })
 
     return (
-        <> <Box><h1>Favorite Gyms</h1></Box>
+        <> <Box marginRight="16px"><h1>Favorite Gyms</h1></Box>
             {showSpinner ? <CircularProgress /> :
                 <Grid container spacing={2} justifyContent="center">
-                    {favGyms?.map((gym, index) => {
-                        return <GymCard gymData={gym} wasFavorited={gym.isFavorited} />
-                    })}
+                    {favGyms.length > 0
+                        ? favGyms.map((gym, index) => {
+                            return <GymCard gymData={gym} wasFavorited={gym.isFavorited} />
+                        })
+                        : <Typography justifyContent="center">Favorite some gyms to see here.</Typography>}
+
                 </Grid>}</>
     )
 } 

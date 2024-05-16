@@ -1,16 +1,13 @@
 import React from 'react';
 
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
@@ -19,7 +16,6 @@ import './styles.scss';
 
 export default function GymCard({ gymData, wasFavorited }) {
     const [isFavorited, setIsFavorited] = React.useState(wasFavorited);
-    const [isFlipped, setIsFlipped] = React.useState(false);
 
     const toggleCardInFavorites = (gymData) => {
         const gym = {

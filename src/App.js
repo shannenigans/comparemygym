@@ -2,27 +2,17 @@ import React from 'react';
 
 import './App.css';
 
-import AppBar from '@mui/material/AppBar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import AddLocationIcon from '@mui/icons-material/AddLocation'
-import FeedbackIcon from '@mui/icons-material/Feedback';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
-import MenuIcon from '@mui/icons-material/Menu';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import HomeIcon from '@mui/icons-material/Home';
 
-import AddGymCardForm from './forms/AddGymCardForm';
 import AllGyms from './AllGyms';
-import GiveFeedbackForm from './forms/GiveFeedbackForm';
+// import AddGymCardForm from './forms/AddGymCardForm';
+// import GiveFeedbackForm from './forms/GiveFeedbackForm';
 import Home from './Home';
 import Favorites from './Favorites';
 
@@ -35,9 +25,10 @@ const TABS = {
 }
 
 const actions = [
+  { icon: <HomeIcon />, name: TABS.Home},
   { icon: <FitnessCenterIcon />, name: TABS.Gyms },
-  { icon: <AddLocationIcon />, name: TABS.AddGym },
-  { icon: <FeedbackIcon />, name: TABS.GiveFeedback},
+  // { icon: <AddLocationIcon />, name: TABS.AddGym },
+  // { icon: <FeedbackIcon />, name: TABS.GiveFeedback},
   { icon: <FavoriteIcon />, name: TABS.Favorites}
 ];
 
@@ -56,11 +47,7 @@ function App() {
       flexDirection="column"
       textAlign="center"
     >
-      {nav === TABS.Home && <Home></Home>}
-      {nav === TABS.AddGym && <AddGymCardForm></AddGymCardForm>}
-      {nav === TABS.Gyms && <AllGyms></AllGyms>}
-      {nav === TABS.GiveFeedback && <GiveFeedbackForm></GiveFeedbackForm>}
-      {nav === TABS.Favorites && <Favorites />}
+      {renderTab(nav)}
       <SpeedDial
         ariaLabel='speed dial'
         sx={{ position: 'absolute', bottom: 16, right: 16 }}
@@ -78,6 +65,18 @@ function App() {
     </Box>
   </>
   );
+}
+
+function renderTab(nav) {
+  switch(nav) {
+    case TABS.Gyms:
+      return <AllGyms />;
+    case TABS.Favorites:
+      return <Favorites />;
+    default:
+    case TABS.Home:
+      return <Home />;
+  }
 }
 
 export default App;

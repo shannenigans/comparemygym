@@ -14,9 +14,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
-export default function GymCard({ name, location, img }) {
+export default function GymCard({ name, location, img, wasFavorited }) {
     const [ averageRating, setAverageRating ] = React.useState([]);
     const [ numRatings, setNumRatings ] = React.useState(0);
+    const [ isFavorited, setIsFavorited ] = React.useState(wasFavorited);
 
     // React.useEffect(() => {
     //     const queryParam = { name: name };
@@ -34,6 +35,30 @@ export default function GymCard({ name, location, img }) {
     //         setNumRatings(ratingsData.length);
     //     })
     // }, [])
+
+    const toggleCardInFavorites = (name, location) => {
+        const gym = {
+            displayName: {
+                text: name
+            },
+            formattedAddress: location,
+            isFavorited: !isFavorited
+        };
+
+        fetch('http://localhost:3001/api/addToFavorites',
+            {
+                method: 'POST',
+                body: JSON.stringify(gym),
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }
+        )
+        .then((res) => {
+            return res.json();
+        })
+        .then((data) => { setIsFavorited(!isFavorited); })
+    }
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -65,8 +90,8 @@ export default function GymCard({ name, location, img }) {
                     <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box> */}
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
+                    <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
+                        <FavoriteIcon sx={ isFavorited ? { color: 'red' } : {}}/>
                     </IconButton>
                 </CardActions>
             </Card>

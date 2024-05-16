@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
 const gyms = [];
+let faves = [];
 const fetch = require("node-fetch")
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -51,6 +52,25 @@ app.get('/api/getAverageRating', (req, res) => {
 
     const ratings = gyms[index].ratings;
     return res.json(ratings);
+})
+
+app.get('/api/getFavorites', (req, res) => {
+    return res.json(faves)
+})
+
+app.post('/api/addToFavorites', (req, res) => {
+    const favGym = req.body;
+
+    if (favGym.isFavorited) {
+        if (faves.filter((gym) => gym.displayName.text === favGym.displayName.text).length === 0) {
+            faves.push(favGym);
+        }
+    } else {
+        console.log(favGym)
+        faves = faves.filter((gym) => gym.displayName.text !== favGym.displayName.text);
+        console.log(faves)
+    }
+    return res.json(faves)
 })
 
 app.post('/api/addFeedback', (req, res) => {

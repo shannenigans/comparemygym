@@ -19,6 +19,7 @@ const RADIUS_STRINGS = {
 
 export default function AllGyms() {
     const [gyms, setGyms] = React.useState([]);
+    const [favGym, setFavGyms] = React.useState([])
     const [radius, setRadius] = React.useState(RADIUS.MILE);
     const [showSpinner, setShowSpinner] = React.useState(true);
 
@@ -37,12 +38,40 @@ export default function AllGyms() {
             };
             const queryString = new URLSearchParams(queryParam).toString();
 
-            fetch(`http://localhost:3001/api/getNearbyGyms?${queryString}`)
+            Promise.all([
+                fetch(`http://localhost:3001/api/getNearbyGyms?${queryString}`)
                 .then((res) => {
                     return res.json();
+                }),
+                fetch('http://localhost:3001/api/getFavorites',
+                {
+                    method: 'GET'
+                }
+            )
+                .then((res) => {
+                    return res.json()
                 })
-                .then(data => { setGyms(data.places); setShowSpinner(false) })
-                .catch(err => { console.log(err) })
+            ]).then(( data ) => {
+                setShowSpinner(false)
+
+                let gyms = data[0].places;
+                const favGyms = data[1]
+                
+                if (favGyms.length !== 0) {
+                    favGyms.forEach((favGym) => {
+                        const gymToUpdate = gyms.find((gym) => gym.displayName.text === favGym.displayName.text);
+
+                        if (gymToUpdate) {
+                            gymToUpdate.isFavorited = true;
+                        }
+                    })
+            
+                    setGyms(gyms)
+                } else {
+                    setGyms(data[0].places);
+                }
+            })
+
         })
     }, [radius])
 
@@ -65,7 +94,7 @@ export default function AllGyms() {
             {showSpinner ? <CircularProgress /> :
                 <Grid container spacing={2} justifyContent="center">
                     {gyms?.map((gym, index) => {
-                        return <GymCard name={gym.displayName.text} location={gym.formattedAddress} />
+                        return <GymCard name={gym.displayName.text} location={gym.formattedAddress} wasFavorited={gym?.isFavorited} />
                     })}
                 </Grid>}</>
     )

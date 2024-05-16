@@ -13,35 +13,17 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
 
-export default function GymCard({ name, location, img, wasFavorited }) {
-    const [ averageRating, setAverageRating ] = React.useState([]);
-    const [ numRatings, setNumRatings ] = React.useState(0);
-    const [ isFavorited, setIsFavorited ] = React.useState(wasFavorited);
+import './styles.scss';
 
-    // React.useEffect(() => {
-    //     const queryParam = { name: name };
-    //     const queryString = new URLSearchParams(queryParam).toString();
+export default function GymCard({ gymData, wasFavorited }) {
+    const [isFavorited, setIsFavorited] = React.useState(wasFavorited);
+    const [isFlipped, setIsFlipped] = React.useState(false);
 
-    //     fetch(`http://localhost:3001/api/getAverageRating?${queryString}`, {
-    //         method: 'GET'
-    //     })
-    //     .then((res) => {
-    //         return res.json()
-    //     })
-    //     .then((ratingsData) => {
-    //         const sum = ratingsData.reduce((a, b) => a + b, 0);
-    //         setAverageRating(sum / ratingsData.length);
-    //         setNumRatings(ratingsData.length);
-    //     })
-    // }, [])
-
-    const toggleCardInFavorites = (name, location) => {
+    const toggleCardInFavorites = (gymData) => {
         const gym = {
-            displayName: {
-                text: name
-            },
-            formattedAddress: location,
+            ...gymData,
             isFavorited: !isFavorited
         };
 
@@ -54,47 +36,100 @@ export default function GymCard({ name, location, img, wasFavorited }) {
                 }
             }
         )
-        .then((res) => {
-            return res.json();
-        })
-        .then((data) => { setIsFavorited(!isFavorited); })
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => { setIsFavorited(!isFavorited); })
     }
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
-            <Card variant="outlined">
-                <CardHeader
-                    avatar={
-                        <Avatar aria-label="avatar name">
-                            {name[0]}
-                        </Avatar>
-                    }
-                    action={
-                        <IconButton aria-label="settings">
-                            <MoreVertIcon />
-                        </IconButton>
-                    }
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {name}
-                    </Typography>
-                    <Typography variant="body1">
-                        {location}
-                    </Typography>
-                    {/* <Rating 
-                    name="rating"
-                    value={averageRating}
-                    readOnly
-                    />
-                    <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box> */}
-                </CardContent>
-                <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
-                        <FavoriteIcon sx={ isFavorited ? { color: 'red' } : {}}/>
-                    </IconButton>
-                </CardActions>
+            <Card variant="outlined" className='flip'>
+                <div className='flip-inner'>
+                    <div className='front'>
+                        {renderInner(gymData, toggleCardInFavorites, isFavorited, true)}
+                    </div>
+                    <div className='back'>
+                        {renderInner(gymData, toggleCardInFavorites, isFavorited, false)}
+                    </div>
+                </div>
             </Card>
         </Grid>
+    )
+}
+
+function renderInner(gymData, toggleCardInFavorites, isFavorited, isFront) {
+    const name = gymData.displayName.text;
+    const location = gymData.formattedAddress;
+
+    return (<>
+        {renderHeader(name)}
+        {renderCardContent(gymData, isFront)}
+        {renderActions(name, location, toggleCardInFavorites, isFavorited)}
+    </>)
+}
+
+function renderCardContent(gymData, isFront) {
+    const name = gymData.displayName.text;
+    const location = gymData.formattedAddress;
+    const currentOpeningHours = gymData.currentOpeningHours?.weekdayDescriptions;
+    const rating = gymData.rating;
+    const website = gymData.websiteUri;
+    const userRatingCount = gymData.userRatingCount;
+    const phone = gymData.nationalPhoneNumber;
+    
+    return (isFront ?
+        <CardContent>
+            <Typography gutterBottom variant="h5" component="div">
+                {name}
+            </Typography>
+            <Typography variant="body1">
+                {location}
+            </Typography>
+            <Typography variant='body1'>
+                {phone}
+            </Typography>
+            <Rating 
+                name="gym-rating"
+                value={rating}
+                readOnly
+                className='gym-rating'
+            />
+            <Typography variant='body2'>
+                {userRatingCount} reviews
+            </Typography>
+        </CardContent>
+        : <CardContent>
+            {currentOpeningHours && <Typography gutterBottom variant="h5" component="div">
+                {'Hours'}
+            </Typography>}
+            {currentOpeningHours ? currentOpeningHours.map((hour) => {
+                return <Typography variant="body1">{hour}</Typography>
+            }) 
+            : 
+            <>No hours available. See <Link variant="body2">{website}</Link> for more details.</>}
+        </CardContent>
+
+    )
+}
+
+function renderActions(name, location, toggleCardInFavorites, isFavorited) {
+    return (
+        <CardActions disableSpacing>
+            <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
+                <FavoriteIcon sx={isFavorited ? { color: 'red' } : {}} />
+            </IconButton>
+        </CardActions>
+    )
+}
+function renderHeader(name) {
+    return (
+        <CardHeader
+            avatar={
+                <Avatar aria-label="avatar name">
+                    {name[0]}
+                </Avatar>
+            }
+        />
     )
 }

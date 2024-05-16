@@ -78,8 +78,20 @@ export default function AllGyms() {
 
     return (
         <> <Box><h1>All Gyms</h1></Box>
-            <FormControl>
-                <FormLabel id="gym_radius_label">What radius of gyms in your area do you want to see?</FormLabel>
+            {renderRadioButtons(setRadius, setShowSpinner)}
+            {showSpinner ? <CircularProgress /> :
+                <Grid container spacing={2} justifyContent="center">
+                    {gyms?.map((gym, index) => {
+                        return <GymCard gymData={gym} wasFavorited={gym?.isFavorited} />
+                    })}
+                </Grid>}</>
+    )
+}
+
+function renderRadioButtons(setRadius, setShowSpinner) {
+    return (
+        <FormControl>
+                <FormLabel id="gym_radius_label">Find the top gyms in this radius:</FormLabel>
                 <RadioGroup
                     aria-labelledby="gym_radius_label"
                     defaultValue={RADIUS.MILE}
@@ -91,11 +103,5 @@ export default function AllGyms() {
                     <FormControlLabel value={RADIUS.THREE_MILE} control={<Radio />} label={RADIUS_STRINGS.THREE_MILE} />
                 </RadioGroup>
             </FormControl>
-            {showSpinner ? <CircularProgress /> :
-                <Grid container spacing={2} justifyContent="center">
-                    {gyms?.map((gym, index) => {
-                        return <GymCard name={gym.displayName.text} location={gym.formattedAddress} wasFavorited={gym?.isFavorited} />
-                    })}
-                </Grid>}</>
     )
 }

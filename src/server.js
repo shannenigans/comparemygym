@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const app = express();
-const gyms = [];
+let gyms = [];
 let faves = [];
 const fetch = require("node-fetch")
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,12 +31,14 @@ app.get('/api/getNearbyGyms', (req, res) => {
             {
                 'Content-Type': 'application/json',
                 'X-Goog-Api-Key': process.env.REACT_APP_GOOGLE_PLACES_API,
-                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.photos'
+                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.nationalPhoneNumber,places.rating,places.currentOpeningHours,places.userRatingCount,places.websiteUri'
             }
 
         })
         .then((response) => { return response.json()})
-        .then((data) => { return res.json(data)})
+        .then((data) => { 
+            gyms = data.places;
+            return res.json(data)})
     } catch (err) {
         console.error("Error", err)
     }

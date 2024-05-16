@@ -10,3 +10,6 @@ Run the client by running npm start in the root
 
 ### `node server.js`
 Run the express server
+
+### API Keys
+To maintain security, API keys are stored in local .env

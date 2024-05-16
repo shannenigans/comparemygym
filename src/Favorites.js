@@ -7,7 +7,7 @@ export default function Favorites() {
     const [ favGyms, setFavGyms ] = React.useState([]);
     const [ showSpinner, setShowSpinner ] = React.useState(true);
 
-    React.useState(() => {
+    React.useEffect(() => {
         fetch('http://localhost:3001/api/getFavorites',
             {
                 method: 'GET'
@@ -20,14 +20,14 @@ export default function Favorites() {
             setFavGyms(data);
             setShowSpinner(false)
         })
-    }, [])
+    })
 
     return (
         <> <Box><h1>Favorite Gyms</h1></Box>
         {showSpinner ? <CircularProgress /> :
             <Grid container spacing={2} justifyContent="center">
                 {favGyms?.map((gym, index) => {
-                    return <GymCard name={gym.displayName.text} location={gym.formattedAddress} />
+                    return <GymCard name={gym.displayName.text} location={gym.formattedAddress} wasFavorited={gym.isFavorited}/>
                 })}
             </Grid>}</>
     )

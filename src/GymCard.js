@@ -14,9 +14,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Rating from '@mui/material/Rating';
 import Grid from '@mui/material/Grid';
 
-export default function GymCard({ name, location, img }) {
+export default function GymCard({ name, location, img, wasFavorited }) {
     const [ averageRating, setAverageRating ] = React.useState([]);
     const [ numRatings, setNumRatings ] = React.useState(0);
+    const [ isFavorited, setIsFavorited ] = React.useState(wasFavorited);
 
     // React.useEffect(() => {
     //     const queryParam = { name: name };
@@ -35,12 +36,13 @@ export default function GymCard({ name, location, img }) {
     //     })
     // }, [])
 
-    const addCardToFavorites = (name, location) => {
+    const toggleCardInFavorites = (name, location) => {
         const gym = {
             displayName: {
                 text: name
             },
-            formattedAddress: location
+            formattedAddress: location,
+            isFavorited: !isFavorited
         };
 
         fetch('http://localhost:3001/api/addToFavorites',
@@ -55,7 +57,7 @@ export default function GymCard({ name, location, img }) {
         .then((res) => {
             return res.json();
         })
-        .then((data) => { console.log(data)})
+        .then((data) => { setIsFavorited(!isFavorited); })
     }
 
     return (
@@ -88,8 +90,8 @@ export default function GymCard({ name, location, img }) {
                     <Box sx={{ ml: 2 }}>{numRatings} { numRatings === 1 ? 'review' : 'reviews'}</Box> */}
                 </CardContent>
                 <CardActions disableSpacing>
-                    <IconButton aria-label="add to favorites" onClick={() => addCardToFavorites(name, location)}>
-                        <FavoriteIcon />
+                    <IconButton aria-label="add to favorites" onClick={() => toggleCardInFavorites(name, location)}>
+                        <FavoriteIcon sx={ isFavorited ? { color: 'red' } : {}}/>
                     </IconButton>
                 </CardActions>
             </Card>

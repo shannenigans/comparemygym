@@ -103,7 +103,7 @@ function renderCardContent(gymData, isFront) {
                 return <Typography variant="body1">{hour}</Typography>
             }) 
             : 
-            <>No hours available. See <Link variant="body2">{website}</Link> for more details.</>}
+            <>No hours available. See <Link href={website} target="_blank" variant="body2">website</Link> for more details.</>}
         </CardContent>
 
     )

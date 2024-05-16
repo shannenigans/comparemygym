@@ -13,7 +13,7 @@ export default function Home() {
     };
     return (
         <Box>
-            <h1>Welcome to ratemygym!</h1>
+            <h1>Welcome to comparemygym!</h1>
             <Lottie options={defaultOptions} height={100} width={100}/>
         </Box>
     )
